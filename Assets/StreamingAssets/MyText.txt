@@ -1,0 +1,9 @@
+In discrete mathematics, negation is a fundamental concept in the field of logic. It’s represented by the symbol ¬.
+
+Negation is an operation that takes a statement p and transforms it into a new statement, commonly referred to as “not p” or ¬p. The truth value of ¬p is the opposite of the truth value of p. In other words, if p is true, then ¬p is false, and vice versa.
+
+Here’s a simple example:
+
+Let’s consider the statement p: "It is raining." The negation of p would be ¬p: "It is not raining." If it is indeed raining, then p is true and ¬p is false. If it is not raining, then p is false and ¬p is true.
+
+This concept is crucial in forming logical expressions and performing logical reasoning. It’s one of the basic building blocks of propositional logic, a system of logic that deals with statements (or “propositions”) that can be either true or false.
