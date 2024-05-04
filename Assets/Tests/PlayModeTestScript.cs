@@ -34,11 +34,11 @@ public class PlayModeTestScript
         SceneManager.LoadScene("IntroScene");
         yield return new WaitForSeconds(1f);
 
-        // Find the Play button
+        // Find the playButton
         GameObject playButton = GameObject.Find("startGameButton");
 
         // Assert that the button is not null
-        Assert.IsNotNull(playButton, "Play button not found in Intro scene");
+        Assert.IsNotNull(playButton, "playButton not found in IntroScene");
 
         // Simulate a button click
         playButton.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
@@ -46,9 +46,30 @@ public class PlayModeTestScript
         // Wait for the scene transition
         yield return new WaitForSeconds(1f);
 
-        // Assert that the current scene is now the Game scene
-        Assert.AreEqual("Level01Scene", SceneManager.GetActiveScene().name, "Game scene not loaded after clicking Play button");
-        Debug.Log("Level01Scene loaded after clicking Play");
+        // Assert that the current scene is now the Level01Scene
+        Assert.AreEqual("Level01Scene", SceneManager.GetActiveScene().name, "Game scene not loaded after clicking playButton");
+        Debug.Log("Level01Scene loaded after clicking playButton in IntroScene");
+        yield return new WaitForSeconds(0.1f);
+    }
+
+    [UnityTest]
+    public IEnumerator ReturnToMainMenuClick()
+    {
+        // Wait for the scene to load
+        SceneManager.LoadScene("Level01Scene");
+        yield return new WaitForSeconds(1f);
+
+        // Find the backToStartButton
+        GameObject backToStartButton = GameObject.Find("backToStartButton");
+        Assert.IsNotNull(backToStartButton, "backToStartButton not found in Level01Scene");
+
+        // Simulate a button click
+        backToStartButton.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+        yield return new WaitForSeconds(1f);
+
+        // Assert that the current scene is now the IntroScene
+        Assert.AreEqual("IntroScene", SceneManager.GetActiveScene().name, "IntroScene not loaded after clicking backToStartButton");
+        Debug.Log("IntroScene loaded after clicking backToStartButton in Level01Scene");
         yield return new WaitForSeconds(0.1f);
     }
 
@@ -63,17 +84,17 @@ public class PlayModeTestScript
         MockApplicationQuitter quitter = new MockApplicationQuitter();
 
         // Find the Exit button
-        GameObject exitButton = GameObject.Find("exitGameButton");
-        Assert.IsNotNull(exitButton, "Exit Game button not found in same object");
+        GameObject exitGameButton = GameObject.Find("exitGameButton");
+        Assert.IsNotNull(exitGameButton, "exitGameButton not found in IntroScene");
 
-        // Get the ExitGame script attached to the exit button
-        ExitGame exitGame = exitButton.GetComponent<ExitGame>();
+        // Get the ExitGame script attached to the exitGameButton
+        ExitGame exitGameScript = exitGameButton.GetComponent<ExitGame>();
 
         // Replace the real quitter with the mock one
-        exitGame.SetQuitter(quitter);
+        exitGameScript.SetQuitter(quitter);
 
         // Simulate a button click
-        exitButton.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+        exitGameButton.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
 
         // Wait for scene transition
         yield return new WaitForSeconds(.5f);
@@ -114,7 +135,6 @@ public class PlayModeTestScript
         // Find the CharacterRobotBoy in the scene
         GameObject player = GameObject.Find("CharacterRobotBoy");
         Assert.IsNotNull(player, "CharacterRobotBoy object not found");
-        Debug.Log("Player found");
 
         // Get the player's initial position
         Vector3 initialPosition = player.transform.position;
