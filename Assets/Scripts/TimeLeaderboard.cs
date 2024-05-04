@@ -31,7 +31,7 @@ public class TimeLeaderboard : MonoBehaviour
             for (int i = 0; i < 5; i++)
             {
                 leaderboardTimes.Add(PlayerPrefs.GetFloat("LeaderboardTime" + i));
-                Debug.Log("Start LB Entry added at: " + Time.time + " index: " + i + " value: " + PlayerPrefs.GetFloat("LeaderboardTime" + i, float.MaxValue));
+                //Debug.Log("Start LB Entry added at: " + Time.time + " index: " + i + " value: " + PlayerPrefs.GetFloat("LeaderboardTime" + i, float.MaxValue));
             }
         }
     }

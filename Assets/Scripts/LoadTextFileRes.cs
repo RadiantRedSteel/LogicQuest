@@ -1,22 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class LoadTextFileRes : MonoBehaviour
 {
-    public TMP_Text textTarget;
+    public TMP_Text textTarget; // Output target
+    public string fileLoadName; // Don't include .txt in name
     // Start is called before the first frame update
     void Start()
     {
-        TextAsset myTextFile = (TextAsset)Resources.Load("MyText");
+        // Loads from Assets/Resources
+        TextAsset myTextFile = (TextAsset)Resources.Load(fileLoadName);
         string myText = myTextFile.text;
         textTarget.text = myText;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log(fileLoadName + ".txt" + " loaded!");
     }
 }

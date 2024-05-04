@@ -1,20 +1,72 @@
 using UnityEngine;
-using UnityEditor;
 
 #if UNITY_EDITOR
+using UnityEditor;
 #endif
+
+public interface IApplicationQuitter
+{
+    void Quit();
+}
+
+#if UNITY_EDITOR
+public class EditorApplicationQuitter : IApplicationQuitter
+{
+    public void Quit()
+    {
+        EditorApplication.isPlaying = false;
+    }
+}
+#endif
+
+public class RuntimeApplicationQuitter : IApplicationQuitter
+{
+    public void Quit()
+    {
+        Application.Quit();
+    }
+}
+
+public class WebGLApplicationQuitter : IApplicationQuitter
+{
+    public void Quit()
+    {
+        Application.OpenURL("https://github.com/RadiantRedSteel/LogicQuest");
+    }
+}
+
+public class MockApplicationQuitter : IApplicationQuitter
+{
+    public bool HasQuit { get; private set; }
+
+    public void Quit()
+    {
+        HasQuit = true;
+    }
+}
 
 public class ExitGame : MonoBehaviour
 {
-    public void ExitBuild()
+    private IApplicationQuitter quitter;
+
+    private void Awake()
     {
         #if UNITY_EDITOR
-            EditorApplication.isPlaying = false;
+            quitter = new EditorApplicationQuitter();
         #elif UNITY_WEBGL
-			// Insert your GitHub Project Link within the string
-            Application.OpenURL("https://github.com/RadiantRedSteel/LogicQuest");
+            quitter = new WebGLApplicationQuitter();
         #else
-            Application.Quit();
+            quitter = new RuntimeApplicationQuitter();
         #endif
+    }
+
+    public void SetQuitter(IApplicationQuitter newQuitter)
+    {
+        quitter = newQuitter;
+    }
+
+    public void ExitBuild()
+    {
+        quitter.Quit();
     }
 }
